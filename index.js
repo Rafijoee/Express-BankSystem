@@ -21,6 +21,11 @@ app.use(session({
 
 app.use(morgan('dev'));
 app.use(flash());
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+  });
 
 const authRouter = require('./routes/auth.routes');
 app .use('/', authRouter);
