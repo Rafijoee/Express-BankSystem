@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
 const router = require('./routes/auth.routes'); // pastikan router sudah diimport atau sesuaikan dengan path router Anda
+const passport = require('./lib/passport'); // pastikan passport sudah diimport atau sesuaikan dengan path passport Anda
 
 const app = express();
 const port = process.env.PORT || 3000; // Menggunakan port dari .env jika ada
@@ -19,6 +20,9 @@ app.use(session({
     saveUninitialized: true,
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(morgan('dev'));
 app.use(flash());
 app.use((req, res, next) => {
@@ -27,8 +31,7 @@ app.use((req, res, next) => {
     next();
   });
 
-const authRouter = require('./routes/auth.routes');
-app .use('/', authRouter);
+app .use('/', router);
 
 
 app.listen(port, () => {

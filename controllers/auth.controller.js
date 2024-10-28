@@ -42,34 +42,6 @@ class AuthController {
         }
     }
 
-    static async loginPost(req, res) {
-        const { email, password } = req.body;
-        const user = await prisma.user.findUnique({
-            where: { email: email }
-        });
-
-        if (!user) {
-            req.flash('error', 'Email or password is wrong');
-            return res.redirect('/login');
-        } else {
-            const validPassword = await bcrypt.compare(password, user.password);
-
-            if (!validPassword) {
-                req.flash('error', 'Email or password is wrong');
-                return res.redirect('/login');
-            }
-
-            req.session.user = {
-                id: user.id,
-                name: user.name,
-                email: user.email
-            };
-
-            req.flash('success', 'Login success');
-            return res.redirect('/auth/authenticate');
-        }
-    }
-
     static async authenticate(req, res) {
         res.render('authenticate', { user: req.session.user });
     }
