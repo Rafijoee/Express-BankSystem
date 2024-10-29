@@ -4,7 +4,8 @@ const express = require('express');
 const morgan = require('morgan');
 const session = require('express-session');
 const flash = require('express-flash');
-const router = require('./routes/auth.routes'); // pastikan router sudah diimport atau sesuaikan dengan path router Anda
+const routerAuth = require('./routes/auth.routes'); // pastikan router sudah diimport atau sesuaikan dengan path router Anda
+const routerAccount = require('./routes/account.routes'); // pastikan router sudah diimport atau sesuaikan dengan path router Anda
 const passport = require('./lib/passport'); // pastikan passport sudah diimport atau sesuaikan dengan path passport Anda
 
 const app = express();
@@ -31,7 +32,8 @@ app.use((req, res, next) => {
     next();
   });
 
-app .use('/', router);
+app .use('/api/v1', routerAuth);
+app.use('/api/v1', routerAccount);
 
 
 app.listen(port, () => {

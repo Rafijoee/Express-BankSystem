@@ -83,6 +83,83 @@ class AccountControllers {
             });
         }
     }
+    static async getAccountById(req, res) {
+        try {
+            const { id } = req.params;
+            const account = await prisma.bankAccount.findUnique({
+                where: { id: parseInt(id) }
+            });
+        
+            if (!account) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "Account not found"
+                });
+            }
+        
+            res.status(200).json({
+                status: "success",
+                message: "Account retrieved successfully",
+                data: account
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "error",
+                message: "Failed to retrieve account",
+                error: error.message
+            });
+        }
+    }
+
+    static async updateAccount(req, res) {
+        try {
+            const { id } = req.params;
+            const { bankName, bankAccountNumber, balance } = req.body;
+        
+            const account = await prisma.bankAccount.update({
+                where: { id: parseInt(id) },
+                data: {
+                    bank_name: bankName,
+                    bank_account_number: bankAccountNumber,
+                    balance: parseFloat(balance)
+                }
+            });
+        
+            res.status(200).json({
+                status: "success",
+                message: "Account updated successfully",
+                data: account
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "error",
+                message: "Failed to update account",
+                error: error.message
+            });
+        }
+    }
+    static async deleteAccount(req, res) {
+        try {
+            const { id } = req.params;
+            const account = await prisma.bankAccount.delete({
+                where: { id: parseInt(id) }
+            });
+            res.status(200).json({
+                status: "success",
+                message: "Account deleted successfully",
+                data: account
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "error",
+                message: "Failed to delete account",
+                error: error.message
+            });
+        }
+    }
 }
 
 module.exports = AccountControllers;
