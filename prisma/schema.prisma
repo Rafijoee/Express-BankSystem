@@ -24,8 +24,8 @@ model User {
 
 model BankAccount {
   id                 Int           @id @default(autoincrement())
-  user               User          @relation(fields: [userId], references: [id])
   userId             Int
+  user               User          @relation(fields: [userId], references: [id])
   bank_name          String
   bank_account_number String
   balance            Float
