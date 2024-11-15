@@ -60,40 +60,40 @@ class userControllers {
             });
         }
     }
-    // static async createUser(req, res) {
-    //     const { email, name, identity_type, identity_number, address } = req.body;
-    //     try {
-    //         const user = await prisma.user.create({
-    //             data: {
-    //                 email: email,
-    //                 name: name,
-    //                 password: "password",
-    //                 profile: {
-    //                     create: {
-    //                         identify_type: identity_type,
-    //                         identify_number: identity_number,
-    //                         address: address,
-    //                     }
-    //                 }
-    //             },
-    //             include: {
-    //                 profile: true,
-    //             }
-    //         });
-    //         res.status(201).json({
-    //             status: "success",
-    //             message: "User created successfully",
-    //             data: user
-    //         });
-    //     } catch (error) {
-    //         console.error(error);
-    //         res.status(500).json({
-    //             status: "error",
-    //             message: "Failed to create user",
-    //             error: error.message
-    //             });
-    //     }
-    // }
+    static async createUser(req, res) {
+        const { email, name, identity_type, identity_number, address } = req.body;
+        try {
+            const user = await prisma.user.create({
+                data: {
+                    email: email,
+                    name: name,
+                    password: "password",
+                    profile: {
+                        create: {
+                            identify_type: identity_type,
+                            identify_number: identity_number,
+                            address: address,
+                        }
+                    }
+                },
+                include: {
+                    profile: true,
+                }
+            });
+            res.status(201).json({
+                status: "success",
+                message: "User created successfully",
+                data: user
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "error",
+                message: "Failed to create user",
+                error: error.message
+                });
+        }
+    }
 }
 
 module.exports = userControllers;
